@@ -1,9 +1,9 @@
 public class Item implements Comparable<Item>{
     private String name;
-    private int price;
+    private double price;
 
-    public Item(String name, int price){
-        this.name() = name;
+    public Item(String name, double price){
+        this.name = name;
         this.price = price;
     }
 
@@ -15,7 +15,7 @@ public class Item implements Comparable<Item>{
 
         if(valueCheck0 == value0){
             if(valueCheck1 == value1){
-                if(price = i.getPrice()){
+                if(price == i.getPrice()){
                     return 0;
                 }
                 else if(price > i.getPrice()){
@@ -54,14 +54,14 @@ public class Item implements Comparable<Item>{
         int value1 = getCharValue(1, name);
         int hashCode = value0 * 26 + value1;
 
-        hashCode += int(price * 100);
+        hashCode += (int) (price * 100);
 
         return hashCode;
     }
 
     public int getCharValue(int loc, String word){
         char myChar = word.charAt(loc);
-        int value = (int)(myChar0 - 96);
+        int value = (int)(myChar - 96);
 
         return value;
     }
@@ -70,7 +70,11 @@ public class Item implements Comparable<Item>{
         return name;
     }
 
-    public int getPrice(){
+    public double getPrice(){
         return price;
+    }
+
+    public String toString(){
+        return name + " " + price;
     }
 }
