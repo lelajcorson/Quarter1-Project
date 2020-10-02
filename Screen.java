@@ -17,14 +17,18 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
+import javax.swing.JScrollPane;
 
 public class Screen extends JPanel implements ActionListener{
     private JButton add;
-	private JTextField searchField;
+	private JTextField nameField;
+	private JTextField priceField;
+	private JTextField quantField;
     private JTextArea display;
 	private Font large;
 	private Font small;
-    private Font verySmall;
+    private Font medium;
+	private String groceryList;
 
 	public Screen(){
 		setLayout(null);
@@ -37,7 +41,7 @@ public class Screen extends JPanel implements ActionListener{
 			
 			//reads one line at a time
 			while (scan.hasNextLine()){
-			   System.out.println(scan.nextLine());
+			   //System.out.println(scan.nextLine());
                String word = scan.nextLine();
                String[] array = word.split(",");
                hash.add(new Item(array[0], Double.parseDouble(array[1])));
@@ -49,24 +53,40 @@ public class Screen extends JPanel implements ActionListener{
         }
 
 		large = new Font("Arial", Font.PLAIN, 40);
-		small = new Font("Arial", Font.PLAIN, 20);
-        verySmall = new Font("Arial", Font.PLAIN, 15);
+		small = new Font("Arial", Font.PLAIN, 25);
+        medium = new Font("Arial", Font.PLAIN, 35);
+		groceryList = "";
 
-        add = new JButton("Add Class");
-		add.setBounds(560, 250, 100, 50);
+		Iterator it = tree.iterator();
+
+		while(it.hasNext()){
+			groceryList += it.next();
+		}
+
+        add = new JButton("Add Item");
+		add.setBounds(335, 300, 100, 50);
 		add.addActionListener(this);
-        add.setVisible(false);
 		add(add);
 
-        searchField = new JTextField();
-		searchField.setBounds(50, 100, 200, 30);
-		add(searchField);
+        nameField = new JTextField();
+		nameField.setBounds(345, 140, 150, 30);
+		add(nameField);
 
-        display = new JTextArea("hi");
-		display.setBounds(50, 175, 400, 350);
-        display.setFont(small);
-        display.setEditable(false);
-		add(display);
+		priceField = new JTextField();
+		priceField.setBounds(345, 200, 150, 30);
+		add(priceField);
+
+		quantField = new JTextField();
+		quantField.setBounds(345, 260, 150, 30);
+		add(quantField);
+
+        display = new JTextArea(groceryList);
+
+		JScrollPane scrollPane = new JScrollPane(display); 
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(30,80,200,500);
+		add(scrollPane);
 	}
 	
 	public Dimension getPreferredSize() {
@@ -75,7 +95,23 @@ public class Screen extends JPanel implements ActionListener{
 	
 	public void paintComponent(Graphics g){
         super.paintComponent(g);
-		
+		g.setFont(large);
+		g.drawString("Food 'n Stuff", 250, 50);
+
+		g.setFont(medium);
+		g.drawString("Add to Cart", 275, 110);
+
+		g.setFont(small);
+		g.drawString("Name:", 240, 162);
+		g.drawString("Price:", 240, 222);
+		g.drawString("Quantity:", 240, 282);
+
+		for(int i = 10; i <= 800; i += 10){
+			g.drawLine(i, 0, i, 600);
+		}
+		for(int l = 10; l <= 600; l += 10){
+			g.drawLine(0, l, 800, l);
+		}
 	}
 	
 	public void actionPerformed(ActionEvent eV){

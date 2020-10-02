@@ -75,6 +75,6 @@ public class Item implements Comparable<Item>{
     }
 
     public String toString(){
-        return name + " " + price;
+        return name + "\t" + price + "\n";
     }
 }
