@@ -29,12 +29,14 @@ public class Screen extends JPanel implements ActionListener{
 	private Font small;
     private Font medium;
 	private String groceryList;
+	private ArrayList<Pair<Item, Integer>> cart;
 
 	public Screen(){
 		setLayout(null);
 
         Set<Item> hash = new HashSet<Item>();
         Set<Item> tree = new TreeSet<Item>();
+		cart = new ArrayList<Pair<Item, Integer>>();
 
         try {
 			Scanner scan = new Scanner(new FileReader("StoreA.txt"));
@@ -64,7 +66,7 @@ public class Screen extends JPanel implements ActionListener{
 		}
 
         add = new JButton("Add Item");
-		add.setBounds(335, 300, 100, 50);
+		add.setBounds(325, 300, 100, 50);
 		add.addActionListener(this);
 		add(add);
 
@@ -115,7 +117,12 @@ public class Screen extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent eV){
-        
+        if(e.getSource() == add){
+			String nameInput = nameField.getText();
+			String priceInput = priceField.getText();
+			String quantInput = quantField.getText();
+
+		}
 		repaint();
 	}
 }
