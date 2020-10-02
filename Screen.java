@@ -30,11 +30,12 @@ public class Screen extends JPanel implements ActionListener{
     private Font medium;
 	private String groceryList;
 	private ArrayList<Pair<Item, Integer>> cart;
+	private Set<Item> hash;
 
 	public Screen(){
 		setLayout(null);
 
-        Set<Item> hash = new HashSet<Item>();
+        hash = new HashSet<Item>();
         Set<Item> tree = new TreeSet<Item>();
 		cart = new ArrayList<Pair<Item, Integer>>();
 
@@ -116,12 +117,19 @@ public class Screen extends JPanel implements ActionListener{
 		}
 	}
 	
-	public void actionPerformed(ActionEvent eV){
+	public void actionPerformed(ActionEvent e){
         if(e.getSource() == add){
 			String nameInput = nameField.getText();
-			String priceInput = priceField.getText();
-			String quantInput = quantField.getText();
+			double priceInput = Double.parseDouble(priceField.getText());
+			Integer quantInput = Integer.parseInt(quantField.getText());
+			Item itemAdd = new Item(nameInput, priceInput);
 
+			if(hash.contains(itemAdd)){
+				cart.add(new Pair<Item, Integer>(itemAdd, quantInput));
+			}
+			else{
+				System.out.println("Sorry, that Item could not be found.");
+			}
 		}
 		repaint();
 	}

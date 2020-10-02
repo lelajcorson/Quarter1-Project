@@ -1,5 +1,5 @@
 public class Pair<I, Q>{
-    Item item;
+    I item;
     Q quant;
 
     public Pair(I item, Q quantitiy){
