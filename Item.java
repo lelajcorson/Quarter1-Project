@@ -19,24 +19,24 @@ public class Item implements Comparable<Item>{
                     return 0;
                 }
                 else if(price > i.getPrice()){
-                    return -1;
+                    return 1;
                 }
                 else{
-                    return 1;
+                    return -1;
                 }
             }
             else if(valueCheck1 > value1){
-                return 1;
+                return -1;
             }
             else{
                 return 1;
             }
         }
         else if(valueCheck0 > value0){
-            return 1;
+            return -1;
         }
         else{
-            return -1;
+            return 1;
         }
     }
     

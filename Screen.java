@@ -31,6 +31,11 @@ public class Screen extends JPanel implements ActionListener{
 	private String groceryList;
 	private ArrayList<Pair<Item, Integer>> cart;
 	private Set<Item> hash;
+	private JTextArea display2;
+	private String cartString;
+	private boolean cartContains;
+	private JScrollPane scrollPane;
+	private JScrollPane scrollPane2;
 
 	public Screen(){
 		setLayout(null);
@@ -59,6 +64,8 @@ public class Screen extends JPanel implements ActionListener{
 		small = new Font("Arial", Font.PLAIN, 25);
         medium = new Font("Arial", Font.PLAIN, 35);
 		groceryList = "";
+		cartString = "";
+		cartContains = false;
 
 		Iterator it = tree.iterator();
 
@@ -66,30 +73,39 @@ public class Screen extends JPanel implements ActionListener{
 			groceryList += it.next();
 		}
 
+		System.out.println(groceryList);
+
         add = new JButton("Add Item");
 		add.setBounds(325, 300, 100, 50);
 		add.addActionListener(this);
 		add(add);
 
         nameField = new JTextField();
-		nameField.setBounds(345, 140, 150, 30);
+		nameField.setBounds(295, 140, 150, 30);
 		add(nameField);
 
 		priceField = new JTextField();
-		priceField.setBounds(345, 200, 150, 30);
+		priceField.setBounds(295, 200, 150, 30);
 		add(priceField);
 
 		quantField = new JTextField();
-		quantField.setBounds(345, 260, 150, 30);
+		quantField.setBounds(295, 260, 150, 30);
 		add(quantField);
 
         display = new JTextArea(groceryList);
 
-		JScrollPane scrollPane = new JScrollPane(display); 
+		scrollPane = new JScrollPane(display); 
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(30,80,200,500);
+		scrollPane.setBounds(20,80,160,500);
 		add(scrollPane);
+
+		display2 = new JTextArea(cartString);
+		scrollPane2 = new JScrollPane(display2); 
+		scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane2.setBounds(470,80,160,500);
+		add(scrollPane2);
 	}
 	
 	public Dimension getPreferredSize() {
@@ -102,12 +118,12 @@ public class Screen extends JPanel implements ActionListener{
 		g.drawString("Food 'n Stuff", 250, 50);
 
 		g.setFont(medium);
-		g.drawString("Add to Cart", 275, 110);
+		g.drawString("Add to Cart", 225, 110);
 
 		g.setFont(small);
-		g.drawString("Name:", 240, 162);
-		g.drawString("Price:", 240, 222);
-		g.drawString("Quantity:", 240, 282);
+		g.drawString("Name:", 190, 162);
+		g.drawString("Price:", 190, 222);
+		g.drawString("Quantity:", 190, 282);
 
 		for(int i = 10; i <= 800; i += 10){
 			g.drawLine(i, 0, i, 600);
@@ -125,11 +141,30 @@ public class Screen extends JPanel implements ActionListener{
 			Item itemAdd = new Item(nameInput, priceInput);
 
 			if(hash.contains(itemAdd)){
-				cart.add(new Pair<Item, Integer>(itemAdd, quantInput));
+				for(int i = 0; i < cart.size(); i ++){
+					if(cart.get(i).getItem().equals(itemAdd)){
+						cartContains = true;
+					}
+				}
+				if(cartContains == false){
+					System.out.println("hi");
+					cart.add(new Pair<Item, Integer>(itemAdd, quantInput));
+				}
+				else{
+					cartContains = false;
+				}
 			}
 			else{
 				System.out.println("Sorry, that Item could not be found.");
 			}
+
+			cartString = "";
+			for(int i = 0; i < cart.size(); i ++){
+				System.out.println(cart.get(i).toString());
+				cartString += cart.get(i).toString();
+			}
+
+			display2.setText(cartString);
 		}
 		repaint();
 	}
