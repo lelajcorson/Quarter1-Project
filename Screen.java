@@ -21,9 +21,12 @@ import javax.swing.JScrollPane;
 
 public class Screen extends JPanel implements ActionListener{
     private JButton add;
+	private JButton add2;
 	private JTextField nameField;
 	private JTextField priceField;
 	private JTextField quantField;
+	private JTextField nameAddField;
+	private JTextField priceAddField;
     private JTextArea display;
 	private Font large;
 	private Font small;
@@ -31,6 +34,7 @@ public class Screen extends JPanel implements ActionListener{
 	private String groceryList;
 	private ArrayList<Pair<Item, Integer>> cart;
 	private Set<Item> hash;
+	private Set<Item> tree;
 	private JTextArea display2;
 	private String cartString;
 	private boolean cartContains;
@@ -41,7 +45,7 @@ public class Screen extends JPanel implements ActionListener{
 		setLayout(null);
 
         hash = new HashSet<Item>();
-        Set<Item> tree = new TreeSet<Item>();
+        tree = new TreeSet<Item>();
 		cart = new ArrayList<Pair<Item, Integer>>();
 
         try {
@@ -73,10 +77,15 @@ public class Screen extends JPanel implements ActionListener{
 			groceryList += it.next();
 		}
 
-        add = new JButton("Add Item");
+        add = new JButton("Add to Cart");
 		add.setBounds(275, 300, 100, 50);
 		add.addActionListener(this);
 		add(add);
+
+		add2 = new JButton("Add to Store");
+		add2.setBounds(265, 530, 120, 50);
+		add2.addActionListener(this);
+		add(add2);
 
         nameField = new JTextField();
 		nameField.setBounds(295, 140, 150, 30);
@@ -90,6 +99,14 @@ public class Screen extends JPanel implements ActionListener{
 		quantField.setBounds(295, 260, 150, 30);
 		add(quantField);
 
+		nameAddField = new JTextField();
+		nameAddField.setBounds(295, 430, 150, 30);
+		add(nameAddField);
+
+		priceAddField = new JTextField();
+		priceAddField.setBounds(295, 480, 150, 30);
+		add(priceAddField);
+
         display = new JTextArea(groceryList);
 
 		scrollPane = new JScrollPane(display); 
@@ -102,7 +119,7 @@ public class Screen extends JPanel implements ActionListener{
 		scrollPane2 = new JScrollPane(display2); 
 		scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane2.setBounds(470,80,320,500);
+		scrollPane2.setBounds(460,80,320,500);
 		add(scrollPane2);
 	}
 	
@@ -117,11 +134,14 @@ public class Screen extends JPanel implements ActionListener{
 
 		g.setFont(medium);
 		g.drawString("Add to Cart", 225, 110);
+		g.drawString("Add to Store", 220, 400);
 
 		g.setFont(small);
 		g.drawString("Name:", 190, 162);
 		g.drawString("Price:", 190, 222);
 		g.drawString("Quantity:", 190, 282);
+		g.drawString("Name:", 190, 450);
+		g.drawString("Price:", 190, 510);
 
 		for(int i = 10; i <= 800; i += 10){
 			g.drawLine(i, 0, i, 600);
@@ -161,6 +181,26 @@ public class Screen extends JPanel implements ActionListener{
 			}
 
 			display2.setText(cartString);
+		}
+		else if(e.getSource() == add2){
+			String nameInput2 = nameAddField.getText();
+			double priceInput2 = Double.parseDouble(priceAddField.getText());
+
+			Item itemAdd2 = new Item(nameInput2, priceInput2);
+
+			if(!hash.contains(itemAdd2)){
+				hash.add(itemAdd2);
+				tree.add(itemAdd2);
+			}
+
+			Iterator it = tree.iterator();
+			groceryList = "";
+
+			while(it.hasNext()){
+				groceryList += it.next();
+			}
+
+			display.setText(groceryList);
 		}
 		repaint();
 	}
