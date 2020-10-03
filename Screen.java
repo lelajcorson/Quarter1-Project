@@ -64,7 +64,7 @@ public class Screen extends JPanel implements ActionListener{
 		small = new Font("Arial", Font.PLAIN, 25);
         medium = new Font("Arial", Font.PLAIN, 35);
 		groceryList = "";
-		cartString = "";
+		cartString = "Item\tPrice\tQuantity\tTotal\n";
 		cartContains = false;
 
 		Iterator it = tree.iterator();
@@ -73,10 +73,8 @@ public class Screen extends JPanel implements ActionListener{
 			groceryList += it.next();
 		}
 
-		System.out.println(groceryList);
-
         add = new JButton("Add Item");
-		add.setBounds(325, 300, 100, 50);
+		add.setBounds(275, 300, 100, 50);
 		add.addActionListener(this);
 		add(add);
 
@@ -104,7 +102,7 @@ public class Screen extends JPanel implements ActionListener{
 		scrollPane2 = new JScrollPane(display2); 
 		scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane2.setBounds(470,80,160,500);
+		scrollPane2.setBounds(470,80,320,500);
 		add(scrollPane2);
 	}
 	
@@ -147,7 +145,6 @@ public class Screen extends JPanel implements ActionListener{
 					}
 				}
 				if(cartContains == false){
-					System.out.println("hi");
 					cart.add(new Pair<Item, Integer>(itemAdd, quantInput));
 				}
 				else{
@@ -158,9 +155,8 @@ public class Screen extends JPanel implements ActionListener{
 				System.out.println("Sorry, that Item could not be found.");
 			}
 
-			cartString = "";
+			cartString = "Item\tPrice\tQuantity\tTotal\n";
 			for(int i = 0; i < cart.size(); i ++){
-				System.out.println(cart.get(i).toString());
 				cartString += cart.get(i).toString();
 			}
 
