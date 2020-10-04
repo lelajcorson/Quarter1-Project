@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 public class Screen extends JPanel implements ActionListener{
     private JButton add;
 	private JButton add2;
+	private JButton remove;
 	private JTextField nameField;
 	private JTextField priceField;
 	private JTextField quantField;
@@ -91,9 +92,14 @@ public class Screen extends JPanel implements ActionListener{
 		add(add);
 
 		add2 = new JButton("Add to Store");
-		add2.setBounds(265, 530, 120, 50);
+		add2.setBounds(340, 530, 120, 50);
 		add2.addActionListener(this);
 		add(add2);
+
+		remove = new JButton("Remove from Store");
+		remove.setBounds(190, 530, 150, 50);
+		remove.addActionListener(this);
+		add(remove);
 
         nameField = new JTextField();
 		nameField.setBounds(295, 140, 150, 30);
@@ -142,7 +148,7 @@ public class Screen extends JPanel implements ActionListener{
 
 		g.setFont(medium);
 		g.drawString("Add to Cart", 225, 110);
-		g.drawString("Add to Store", 220, 400);
+		g.drawString("Change Store", 220, 400);
 
 		g.setFont(small);
 		g.drawString("Name:", 190, 162);
@@ -220,6 +226,26 @@ public class Screen extends JPanel implements ActionListener{
 			if(!hash.contains(itemAdd2)){
 				hash.add(itemAdd2);
 				tree.add(itemAdd2);
+			}
+
+			Iterator it = tree.iterator();
+			groceryList = "";
+
+			while(it.hasNext()){
+				groceryList += it.next();
+			}
+
+			display.setText(groceryList);
+		}
+		else if(e.getSource() == remove){
+			String nameInput2 = nameAddField.getText();
+			double priceInput2 = Double.parseDouble(priceAddField.getText());
+
+			Item itemAdd2 = new Item(nameInput2, priceInput2);
+
+			if(hash.contains(itemAdd2)){
+				hash.remove(itemAdd2);
+				tree.remove(itemAdd2);
 			}
 
 			Iterator it = tree.iterator();
