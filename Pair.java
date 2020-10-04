@@ -23,7 +23,15 @@ public class Pair<I, Q>{
         return quant;
     }
 
+    public int getQuantInt(){
+        return quantD;
+    }
+
     public String toString(){
-        return name+ "\t" + price + "\t" + quant + "\t" + (quantD * price) + "\n";
+        return name+ "\t" + price + "\t" + quantD + "\t" + (quantD * price) + "\n";
+    }
+
+    public void setQuant(int quantInput){
+        quantD = quantInput;
     }
 }

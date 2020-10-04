@@ -1,0 +1,1 @@
+I did the challenge where you can add things to the store. Also, you can change the quantity of items in the cart by adding more in the place where you would add new items. You can subtract by adding a negative number.

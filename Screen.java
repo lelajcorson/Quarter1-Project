@@ -40,6 +40,10 @@ public class Screen extends JPanel implements ActionListener{
 	private boolean cartContains;
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane2;
+	private int index;
+	private String totalPrice;
+	private double totalPriceD;
+	private boolean priceChange;
 
 	public Screen(){
 		setLayout(null);
@@ -70,6 +74,10 @@ public class Screen extends JPanel implements ActionListener{
 		groceryList = "";
 		cartString = "Item\tPrice\tQuantity\tTotal\n";
 		cartContains = false;
+		index = 0;
+		totalPrice = "";
+		totalPriceD = 0.0;
+		priceChange = true;
 
 		Iterator it = tree.iterator();
 
@@ -119,7 +127,7 @@ public class Screen extends JPanel implements ActionListener{
 		scrollPane2 = new JScrollPane(display2); 
 		scrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane2.setBounds(460,80,320,500);
+		scrollPane2.setBounds(460,80,320,450);
 		add(scrollPane2);
 	}
 	
@@ -142,13 +150,14 @@ public class Screen extends JPanel implements ActionListener{
 		g.drawString("Quantity:", 190, 282);
 		g.drawString("Name:", 190, 450);
 		g.drawString("Price:", 190, 510);
+		g.drawString("Total: " + totalPrice, 460, 560);
 
-		for(int i = 10; i <= 800; i += 10){
+		/*for(int i = 10; i <= 800; i += 10){
 			g.drawLine(i, 0, i, 600);
 		}
 		for(int l = 10; l <= 600; l += 10){
 			g.drawLine(0, l, 800, l);
-		}
+		}*/
 	}
 	
 	public void actionPerformed(ActionEvent e){
@@ -161,14 +170,34 @@ public class Screen extends JPanel implements ActionListener{
 			if(hash.contains(itemAdd)){
 				for(int i = 0; i < cart.size(); i ++){
 					if(cart.get(i).getItem().equals(itemAdd)){
+						index = i;
 						cartContains = true;
 					}
 				}
-				if(cartContains == false){
+				if(cartContains == false && quantInput > 0){
 					cart.add(new Pair<Item, Integer>(itemAdd, quantInput));
 				}
+				else if(quantInput >= 0 || Math.abs(quantInput) < cart.get(index).getQuantInt()){
+					int oldQuant = cart.get(index).getQuantInt();
+					cart.get(index).setQuant(oldQuant + quantInput);
+					cartContains = false;					
+				}
+				else if(Math.abs(quantInput) - cart.get(index).getQuantInt() == 0){
+					cart.remove(index);
+					totalPriceD = 0;
+					priceInput = 0;
+				}
 				else{
-					cartContains = false;
+					priceChange = false;
+				}
+				
+				if(priceChange){
+					totalPriceD += priceInput * quantInput;
+					totalPrice = "";
+					totalPrice = "" + totalPriceD;
+				}
+				else{
+					priceChange = true;
 				}
 			}
 			else{
